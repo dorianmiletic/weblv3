@@ -11,9 +11,8 @@
   <meta name="author" content="Dorian Miletić">
 
         
-        <link rel="stylesheet" href="style.css">
-        <title>LV1</title> 
-      
+        <link rel="stylesheet" href="style/style.css">
+        <title>LV3</title> 
     </head>
     <body>
         <header>
@@ -39,6 +38,8 @@
                 <li><a href="grafikon.html">Grafikon</a></li>
                 <li><a href="slike.html">Slike</a></li>
             </ul>
+
+            
         </nav>
         </header>
 
@@ -52,6 +53,33 @@
             <aside>
                 <img src="https://unsplash.it/300/200?random=4" alt="asideprvaslika" class="zoom">
                 <img src="https://unsplash.it/300/200?random=5" alt="asidedrugaslika" class="zoom">
+                <div class="filter-container">
+                    <div class="filter-item">
+                        <label for="year">Godina:</label>
+                        <select id="year" onchange="applyFilters()">
+                            <option value="">Sve godine</option>
+                          
+                        </select>
+                    </div>
+                
+                    <div class="filter-item">
+                       
+                        
+                            <label for="country">Odaberi državu:</label>
+                            <select id="country" name="country">
+                                <option value="">Sve države</option>
+                            </select>
+                        </div>
+                
+                    <div class="filter-item">
+                        <label for="minRating">Minimalna ocjena:</label>
+                        <input type="number" id="minRating" placeholder="0.0" min="0" max="10" step="0.1" onchange="applyFilters()">
+                    </div>
+
+                    <div>
+                        <button onclick="applyFilters()">Filtriraj</button>
+                    </div>
+                </div>
               </aside>
               <table id="movies-table">
                 <thead>
@@ -62,11 +90,13 @@
                         <th>Žanr</th>
                         <th>Trajanje</th>
                         <th>Država</th>
+                        <th>Režiseri</th>
+                        <th>Glumci</th>
                         <th>Ocjena</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Podaci će biti dinamički dodani ovde -->
+                    
                 </tbody>
             </table>
         </section>
@@ -74,40 +104,107 @@
     
     
         <script>
-            // Funkcija za učitavanje CSV podataka koristeći Papa Parse
+            let movies = []; 
+            let filteredMovies = []; 
+        
             function loadCSV() {
-                Papa.parse('ejs-galerija/public/filmtv_movies.csv', {
-                    download: true,
-                    header: true, // Prvo red je zaglavlje
-                    dynamicTyping: true,
-                    complete: function(results) {
-                        const movies = results.data; // Ovdje se čuvaju podaci iz CSV-a
-                        const tableBody = document.querySelector('#movies-table tbody'); // Izbor tabele
-    
-                        // Prolazimo kroz sve filmove i dodajemo ih u tabelu
-                        movies.forEach(movie => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${movie.ID}</td>
-                                <td>${movie.Naslov}</td>
-                                <td>${movie.Godina}</td>
-                                <td>${movie.Žanr}</td>
-                                <td>${movie.Trajanje}</td>
-                                <td>${movie.Država}</td>
-                                <td>${movie.Ocjena}</td>
-                            `;
-                            tableBody.appendChild(tr); // Dodajemo red u tabelu
+                fetch('filmtv_movies.csv')  
+                    .then(response => response.text())  
+                    .then(csvData => {
+                        Papa.parse(csvData, {
+                            header: true,  
+                            dynamicTyping: true,  
+                            complete: function(results) {
+                                console.log(results);
+                                movies = results.data;  
+                                filteredMovies = [...movies];  
+                                populateFilters();  
+                                displayMovies(filteredMovies.slice(0, 20));  
+                            },
+                            error: function(error) {
+                                console.error("Greška pri parsiranju CSV-a:", error);
+                            }
                         });
-                    },
-                    error: function(error) {
-                        console.error("Greška prilikom učitavanja CSV-a:", error);
-                    }
+                    })
+                    .catch(error => {
+                        console.error('Greška pri preuzimanju CSV fajla:', error);
+                    });
+            }
+        
+            
+            function displayMovies(moviesToDisplay) {
+                const tableBody = document.querySelector('#movies-table tbody');
+                tableBody.innerHTML = "";  
+        
+                moviesToDisplay.forEach(movie => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${movie.filmtv_id}</td>
+                        <td>${movie.title}</td>
+                        <td>${movie.year}</td>
+                        <td>${movie.genre}</td>
+                        <td>${movie.duration}</td>
+                        <td>${movie.country}</td>
+                        <td>${movie.directors}</td>
+                        <td>${movie.actors}</td>
+                        <td>${movie.avg_vote}</td>
+                    `;
+                    tableBody.appendChild(tr);
                 });
             }
-    
-            // Pozivamo funkciju za učitavanje podataka
-            loadCSV();
-        </script>
+     
+      function populateFilters() {
+        const yearSelect = document.getElementById("year");
+        const countrySelect = document.getElementById("country");
+
+        
+        const years = [...new Set(movies.map(movie => movie.year))].sort((a, b) => a - b); 
+        years.forEach(year => {
+            const option = document.createElement("option");
+            option.value = year;
+            option.text = year;
+            yearSelect.appendChild(option);
+        });
+
+       
+        const countries = new Set();
+        movies.forEach(movie => {
+            if (movie.country) {
+                const countryList = movie.country.split(","); 
+                countryList.forEach(country => countries.add(country.trim())); 
+            }
+        });
+        
+      
+        const sortedCountries = [...countries].sort();
+        sortedCountries.forEach(country => {
+            const option = document.createElement("option");
+            option.value = country;
+            option.text = country;
+            countrySelect.appendChild(option);
+        });
+    }
+
+
+    function applyFilters() {
+        const year = document.getElementById("year").value;
+        const country = document.getElementById("country").value;
+        const minRating = parseFloat(document.getElementById("minRating").value) || 0;
+
+
+        filteredMovies = movies.filter(movie => {
+            const matchesYear = year ? movie.year === parseInt(year) : true;
+            const matchesCountry = country ? movie.country.split(",").map(c => c.trim()).includes(country) : true; 
+            const matchesRating = movie.avg_vote >= minRating;  
+            return matchesYear && matchesCountry && matchesRating; 
+        });
+
+        
+        displayMovies(filteredMovies.slice(0, 20)); 
+    }
+
+    window.onload = loadCSV;  
+</script>
 
 
         </section>

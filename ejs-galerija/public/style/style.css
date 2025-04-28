@@ -1,0 +1,521 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+
+header {
+    background: #222;
+    color: white;
+    padding: 20px;
+}
+
+
+.content {
+    padding: 40px;
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.data-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+
+
+.analysis-flex {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap; 
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.analysis-box {
+    background: #e3e3e3;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+
+.form-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+input, button {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+
+footer {
+    margin-top: 30px;
+    padding: 10px;
+    background: #222;
+    color: white;
+    
+}
+
+
+@media (max-width: 768px) {
+    .data-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .analysis-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form-flex input, .form-flex button {
+        width: 100%;
+    }
+}
+aside{
+    display:grid;
+    float:right;
+
+} 
+
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; 
+    gap: 20px;
+}
+
+
+.table-container {
+    width: 70%; 
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #222;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+
+
+
+aside img {
+    width: 100%;
+    max-width: 220px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+aside img:hover {
+    transform: scale(1.1);
+}
+
+
+@media (max-width: 1024px) {
+    .content-wrapper {
+        flex-direction: column; 
+        align-items: center;
+    }
+
+    .table-container {
+        width: 90%;
+    }
+
+    aside {
+        width: 90%;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    aside img {
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    aside {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    aside img {
+        max-width: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    aside img {
+        max-width: 120px;
+    }
+}
+
+
+
+.zoom {
+    padding: 50px;
+
+    transition: transform .2s; 
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+  }
+
+  .zoom:hover {
+    transform: scale(1.5); 
+  }
+
+
+
+
+.hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.hamburger-menu span {
+    width: 100%;
+    height: 5px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+.menu-toggle {
+    display: none; 
+}
+
+
+.nav-menu {
+    display: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 60px; 
+    left: 50px; 
+    background-color: rgba(34, 34, 34, 0.9); 
+    width: 150px; 
+    text-align: center;
+    z-index: 100;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+}
+
+
+.nav-menu li {
+    margin: 10px 0;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.nav-menu a:hover {
+    background-color: #3498db;
+}
+
+
+.menu-toggle:checked + .hamburger-menu {
+    transform: none;
+}
+
+
+.menu-toggle:checked + .hamburger-menu + .nav-menu {
+    display: block;
+}
+
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+    }
+}
+
+
+/* Kružni grafikon - CSS samo */
+.pie-chart {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #3498db 0% 40%,  /* Industrija */
+        #2ecc71 40% 75%,  /* Kućanstva */
+        #f1c40f 75% 100%  /* Transport */
+    );
+    margin: 0 auto;
+}
+ 
+.charts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+
+.legend-text {
+    font-weight: bold;
+    font-size: 16px;
+}
+ 
+
+.pieContainer {
+    height: 150px;
+    position: relative;
+  }
+
+  .pieBackground {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.5);
+  }
+
+  .pie {
+    transition: all 1s;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    clip: rect(0px, 75px, 150px, 0px);
+  }
+
+  .hold {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    clip: rect(0px, 150px, 150px, 75px);
+  }
+
+      #pieSlice1 .pie {
+    background-color: #1b458b;
+    transform:rotate(120deg);
+  }
+
+  #pieSlice2 {
+    transform: rotate(120deg);
+  }
+
+  #pieSlice2 .pie {
+    background-color: #0a0;
+    transform: rotate(120deg);
+  }
+
+  #pieSlice3 {
+    transform: rotate(240deg);
+  }
+
+  #pieSlice3 .pie {
+    background-color: #f80;
+    transform: rotate(60deg);
+  }
+  #pieSlice1 .pie:hover{
+    background-color: red;
+
+  }
+  #pieSlice2 .pie:hover{
+    background-color: yellow;
+  }
+  #pieSlice3 .pie:hover{
+    background-color: purple;
+
+
+  }
+
+  @import url('https://fonts.googleapis.com/css?family=Abel');
+
+
+  
+  
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  a.image-popup-vertical-fit {
+    cursor: -webkit-zoom-in;
+  }
+  
+  .img-gallery-magnific {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .magnific-img {
+    width: 30%;
+    min-width: 250px;
+  }
+  
+  .magnific-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .magnific-img img:hover {
+    transform: scale(1.03);
+  }
+  
+  .magnific-img {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .magnific-img img {
+      transition: all 0.3s ease;
+    }
+    
+    .magnific-img:hover img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.5);
+      z-index: 10;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    
+  
+  
+  
+  .galerija h1 {
+  
+    color: darkblue;
+    font-size: 2rem;
+    text-align: center;
+  }
+  filter-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+select, input {
+    padding: 8px;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="number"] {
+    width: 100px;
+}

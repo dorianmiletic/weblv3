@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+    <html lang="hr">
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+
+  <meta name="description" content="Super cool new website!">
+  <meta name="keywords" content="HTML, CSS, Movies, W3Schools, Project">
+  <meta name="author" content="Dorian Miletić">
+
+        
+        <link rel="stylesheet" href="style.css">
+        <title>LV1</title> 
+      
+    </head>
+    <body>
+        <header>
+        <h1>Dobrodosli na moju web stranicu</h1>
+        
+        
+      
+
+        <nav aria-label="Navigation bar">
+            
+            <input type="checkbox" id="menu-toggle" class="menu-toggle" >
+            
+           
+            <label for="menu-toggle" class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        
+           
+            <ul class="nav-menu">
+                <li><a href="index.html">Tablica</a></li>
+                <li><a href="grafikon.html">Grafikon</a></li>
+                <li><a href="slike.html">Slike</a></li>
+            </ul>
+        </nav>
+        </header>
+
+
+        
+
+
+
+        <section aria-label="Main section">
+            <h1>Popis Filmova</h1>
+            <aside>
+                <img src="https://unsplash.it/300/200?random=4" alt="asideprvaslika" class="zoom">
+                <img src="https://unsplash.it/300/200?random=5" alt="asidedrugaslika" class="zoom">
+              </aside>
+              <table id="movies-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Naslov</th>
+                        <th>Godina</th>
+                        <th>Žanr</th>
+                        <th>Trajanje</th>
+                        <th>Država</th>
+                        <th>Ocjena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Podaci će biti dinamički dodani ovde -->
+                </tbody>
+            </table>
+        </section>
+    
+    
+    
+        <script>
+            // Funkcija za učitavanje CSV podataka koristeći Papa Parse
+            function loadCSV() {
+                Papa.parse('ejs-galerija/public/filmtv_movies.csv', {
+                    download: true,
+                    header: true, // Prvo red je zaglavlje
+                    dynamicTyping: true,
+                    complete: function(results) {
+                        const movies = results.data; // Ovdje se čuvaju podaci iz CSV-a
+                        const tableBody = document.querySelector('#movies-table tbody'); // Izbor tabele
+    
+                        // Prolazimo kroz sve filmove i dodajemo ih u tabelu
+                        movies.forEach(movie => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${movie.ID}</td>
+                                <td>${movie.Naslov}</td>
+                                <td>${movie.Godina}</td>
+                                <td>${movie.Žanr}</td>
+                                <td>${movie.Trajanje}</td>
+                                <td>${movie.Država}</td>
+                                <td>${movie.Ocjena}</td>
+                            `;
+                            tableBody.appendChild(tr); // Dodajemo red u tabelu
+                        });
+                    },
+                    error: function(error) {
+                        console.error("Greška prilikom učitavanja CSV-a:", error);
+                    }
+                });
+            }
+    
+            // Pozivamo funkciju za učitavanje podataka
+            loadCSV();
+        </script>
+
+
+        </section>
+          
+
+        </section>
+
+
+        
+        <footer>
+        <p>&copy; 2025. Web Programiranje. Sva prava pridrzana.</p>
+        </footer>
+    </body>
+    </html>

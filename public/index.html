@@ -1,55 +1,55 @@
 <!DOCTYPE html>
-    <html lang="hr">
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-
-  <meta name="description" content="Super cool new website!">
-  <meta name="keywords" content="HTML, CSS, Movies, W3Schools, Project">
-  <meta name="author" content="Dorian Miletić">
-
-        
-        <link rel="stylesheet" href="style.css">
-        <title>LV3</title> 
-    </head>
-    <body>
-        <header>
-        <h1>Dobrodosli na moju web stranicu</h1>
-        
-        
-      
-
+<html lang="hr">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Super cool new website!">
+    <meta name="keywords" content="HTML, CSS, Movies, W3Schools, Project">
+    <meta name="author" content="Dorian Miletić">
+    <link rel="stylesheet" href="style.css">
+    <title>LV3</title> 
+</head>
+<body>
+    <header>
+        <h1>Dobrodošli na moju web stranicu</h1>
         <nav aria-label="Navigation bar">
-            
-            <input type="checkbox" id="menu-toggle" class="menu-toggle" >
-            
-           
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
             <label for="menu-toggle" class="hamburger-menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </label>
-        
-           
             <ul class="nav-menu">
                 <li><a href="index.html">Tablica</a></li>
                 <li><a href="grafikon.html">Grafikon</a></li>
                 <li><a href="slike.html">Slike</a></li>
             </ul>
-
-            
         </nav>
-        </header>
+    </header>
 
-
-        
-
-
-
-        <section aria-label="Main section">
-            <h1>Popis Filmova</h1>
+    <section aria-label="Main section" class="content">
+        <h2>Popis Filmova</h2>
+        <div class="content-wrapper">
+            <div class="table-container">
+                <table id="movies-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Naslov</th>
+                            <th>Godina</th>
+                            <th>Žanr</th>
+                            <th>Trajanje</th>
+                            <th>Država</th>
+                            <th>Režiseri</th>
+                            <th>Glumci</th>
+                            <th>Ocjena</th>
+                            <th>Košarica</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
             <aside>
                 <img src="https://unsplash.it/300/200?random=4" alt="asideprvaslika" class="zoom">
                 <img src="https://unsplash.it/300/200?random=5" alt="asidedrugaslika" class="zoom">
@@ -58,164 +58,183 @@
                         <label for="year">Godina:</label>
                         <select id="year" onchange="applyFilters()">
                             <option value="">Sve godine</option>
-                          
                         </select>
                     </div>
-                
                     <div class="filter-item">
-                       
-                        
-                            <label for="country">Odaberi državu:</label>
-                            <select id="country" name="country">
-                                <option value="">Sve države</option>
-                            </select>
-                        </div>
-                
+                        <label for="country">Odaberi državu:</label>
+                        <select id="country" name="country" onchange="applyFilters()">
+                            <option value="">Sve države</option>
+                        </select>
+                    </div>
                     <div class="filter-item">
                         <label for="minRating">Minimalna ocjena:</label>
                         <input type="number" id="minRating" placeholder="0.0" min="0" max="10" step="0.1" onchange="applyFilters()">
                     </div>
-
                     <div>
                         <button onclick="applyFilters()">Filtriraj</button>
                     </div>
                 </div>
-              </aside>
-              <table id="movies-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Naslov</th>
-                        <th>Godina</th>
-                        <th>Žanr</th>
-                        <th>Trajanje</th>
-                        <th>Država</th>
-                        <th>Režiseri</th>
-                        <th>Glumci</th>
-                        <th>Ocjena</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </section>
-    
-    
-    
-        <script>
-            let movies = []; 
-            let filteredMovies = []; 
-        
-            function loadCSV() {
-                fetch('filmtv_movies.csv')  
-                    .then(response => response.text())  
-                    .then(csvData => {
-                        Papa.parse(csvData, {
-                            header: true,  
-                            dynamicTyping: true,  
-                            complete: function(results) {
-                                console.log(results);
-                                movies = results.data;  
-                                filteredMovies = [...movies];  
-                                populateFilters();  
-                                displayMovies(filteredMovies.slice(0, 20));  
-                            },
-                            error: function(error) {
-                                console.error("Greška pri parsiranju CSV-a:", error);
-                            }
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Greška pri preuzimanju CSV fajla:', error);
+                <div id="cart">
+                    <h3>Košarica (<span id="cart-count">0</span>)</h3>
+                    <table id="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Naslov</th>
+                                <th>Godina</th>
+                                <th>Žanr</th>
+                                <th>Ukloni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button onclick="confirmCart()">Potvrdi posudbu</button>
+                    <p id="confirmation-message"></p>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <script>
+        let movies = [];
+        let filteredMovies = [];
+        let cart = [];
+
+        function loadCSV() {
+            fetch('filmtv_movies.csv')
+                .then(response => response.text())
+                .then(csvData => {
+                    Papa.parse(csvData, {
+                        header: true,
+                        dynamicTyping: true,
+                        complete: function(results) {
+                            console.log(results);
+                            movies = results.data;
+                            filteredMovies = [...movies];
+                            populateFilters();
+                            displayMovies(filteredMovies.slice(0, 20));
+                        },
+                        error: function(error) {
+                            console.error("Greška pri parsiranju CSV-a:", error);
+                        }
                     });
-            }
-        
-            
-            function displayMovies(moviesToDisplay) {
-                const tableBody = document.querySelector('#movies-table tbody');
-                tableBody.innerHTML = "";  
-        
-                moviesToDisplay.forEach(movie => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${movie.filmtv_id}</td>
-                        <td>${movie.title}</td>
-                        <td>${movie.year}</td>
-                        <td>${movie.genre}</td>
-                        <td>${movie.duration}</td>
-                        <td>${movie.country}</td>
-                        <td>${movie.directors}</td>
-                        <td>${movie.actors}</td>
-                        <td>${movie.avg_vote}</td>
-                    `;
-                    tableBody.appendChild(tr);
+                })
+                .catch(error => {
+                    console.error('Greška pri preuzimanju CSV fajla:', error);
                 });
+        }
+
+        function displayMovies(moviesToDisplay) {
+            const tableBody = document.querySelector('#movies-table tbody');
+            tableBody.innerHTML = "";
+
+            moviesToDisplay.forEach(movie => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${movie.filmtv_id}</td>
+                    <td>${movie.title}</td>
+                    <td>${movie.year}</td>
+                    <td>${movie.genre}</td>
+                    <td>${movie.duration}</td>
+                    <td>${movie.country}</td>
+                    <td>${movie.directors}</td>
+                    <td>${movie.actors}</td>
+                    <td>${movie.avg_vote}</td>
+                    <td><button onclick="addToCart(${movie.filmtv_id})">Dodaj u košaricu</button></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function populateFilters() {
+            const yearSelect = document.getElementById("year");
+            const countrySelect = document.getElementById("country");
+
+            const years = [...new Set(movies.map(movie => movie.year))].sort((a, b) => a - b);
+            years.forEach(year => {
+                const option = document.createElement("option");
+                option.value = year;
+                option.text = year;
+                yearSelect.appendChild(option);
+            });
+
+            const countries = new Set();
+            movies.forEach(movie => {
+                if (movie.country) {
+                    const countryList = movie.country.split(",");
+                    countryList.forEach(country => countries.add(country.trim()));
+                }
+            });
+
+            const sortedCountries = [...countries].sort();
+            sortedCountries.forEach(country => {
+                const option = document.createElement("option");
+                option.value = country;
+                option.text = country;
+                countrySelect.appendChild(option);
+            });
+        }
+
+        function applyFilters() {
+            const year = document.getElementById("year").value;
+            const country = document.getElementById("country").value;
+            const minRating = parseFloat(document.getElementById("minRating").value) || 0;
+
+            filteredMovies = movies.filter(movie => {
+                const matchesYear = year ? movie.year === parseInt(year) : true;
+                const matchesCountry = country ? movie.country.split(",").map(c => c.trim()).includes(country) : true;
+                const matchesRating = movie.avg_vote >= minRating;
+                return matchesYear && matchesCountry && matchesRating;
+            });
+
+            displayMovies(filteredMovies.slice(0, 20));
+        }
+
+        function addToCart(movieId) {
+            const movie = movies.find(m => m.filmtv_id === movieId);
+            if (movie && !cart.find(m => m.filmtv_id === movieId)) {
+                cart.push(movie);
+                updateCart();
             }
-     
-      function populateFilters() {
-        const yearSelect = document.getElementById("year");
-        const countrySelect = document.getElementById("country");
+        }
 
-        
-        const years = [...new Set(movies.map(movie => movie.year))].sort((a, b) => a - b); 
-        years.forEach(year => {
-            const option = document.createElement("option");
-            option.value = year;
-            option.text = year;
-            yearSelect.appendChild(option);
-        });
+        function removeFromCart(movieId) {
+            cart = cart.filter(m => m.filmtv_id !== movieId);
+            updateCart();
+        }
 
-       
-        const countries = new Set();
-        movies.forEach(movie => {
-            if (movie.country) {
-                const countryList = movie.country.split(","); 
-                countryList.forEach(country => countries.add(country.trim())); 
+        function updateCart() {
+            const cartTable = document.querySelector('#cart-table tbody');
+            const cartCount = document.getElementById('cart-count');
+            cartTable.innerHTML = '';
+            cart.forEach(movie => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${movie.title}</td>
+                    <td>${movie.year}</td>
+                    <td>${movie.genre}</td>
+                    <td><button onclick="removeFromCart(${movie.filmtv_id})">Ukloni</button></td>
+                `;
+                cartTable.appendChild(tr);
+            });
+            cartCount.textContent = cart.length;
+        }
+
+        function confirmCart() {
+            if (cart.length === 0) {
+                document.getElementById('confirmation-message').textContent = "Košarica je prazna.";
+                return;
             }
-        });
-        
-      
-        const sortedCountries = [...countries].sort();
-        sortedCountries.forEach(country => {
-            const option = document.createElement("option");
-            option.value = country;
-            option.text = country;
-            countrySelect.appendChild(option);
-        });
-    }
+            const msg = `Uspješno ste dodali ${cart.length} film(a) u svoju košaricu za vikend maraton!`;
+            document.getElementById('confirmation-message').textContent = msg;
+            cart = [];
+            updateCart();
+        }
 
+        window.onload = loadCSV;
+    </script>
 
-    function applyFilters() {
-        const year = document.getElementById("year").value;
-        const country = document.getElementById("country").value;
-        const minRating = parseFloat(document.getElementById("minRating").value) || 0;
-
-
-        filteredMovies = movies.filter(movie => {
-            const matchesYear = year ? movie.year === parseInt(year) : true;
-            const matchesCountry = country ? movie.country.split(",").map(c => c.trim()).includes(country) : true; 
-            const matchesRating = movie.avg_vote >= minRating;  
-            return matchesYear && matchesCountry && matchesRating; 
-        });
-
-        
-        displayMovies(filteredMovies.slice(0, 20)); 
-    }
-
-    window.onload = loadCSV;  
-</script>
-
-
-        </section>
-          
-
-        </section>
-
-
-        
-        <footer>
-        <p>&copy; 2025. Web Programiranje. Sva prava pridrzana.</p>
-        </footer>
-    </body>
-    </html>
+    <footer>
+        <p>© 2025. Web Programiranje. Sva prava pridržana.</p>
+    </footer>
+</body>
+</html>
